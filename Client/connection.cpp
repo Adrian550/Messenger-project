@@ -20,7 +20,7 @@ Connection::Connection(QObject *parent) : QTcpSocket(parent)
 
     if (query.next())
     {
-    	this->server_ip = "127.0.0.1";//query.value(0).toString();
+    	this->server_ip = "176.126.103.19";//query.value(0).toString();
         this->server_port = query.value(1).toInt();
     }
 
