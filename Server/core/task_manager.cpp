@@ -31,7 +31,7 @@ void Task_manager::disconnect()
     exit(0);
 }
 
-// Добавление таска(пакета от клиента) в очередь задач в обработчике
+// Р”РѕР±Р°РІР»РµРЅРёРµ С‚Р°СЃРєР°(РїР°РєРµС‚Р° РѕС‚ РєР»РёРµРЅС‚Р°) РІ РѕС‡РµСЂРµРґСЊ Р·Р°РґР°С‡ РІ РѕР±СЂР°Р±РѕС‚С‡РёРєРµ
 void Task_manager::on_add_task(QByteArray task)
 {
     receive_queue.enqueue(task);
@@ -40,21 +40,21 @@ void Task_manager::on_add_task(QByteArray task)
         handle_task();
 }
 
-// Обработчик пакетов от клиентов.
+// РћР±СЂР°Р±РѕС‚С‡РёРє РїР°РєРµС‚РѕРІ РѕС‚ РєР»РёРµРЅС‚РѕРІ.
 void Task_manager::handle_task()
 {
-    // Считывает текущий таск
+    // РЎС‡РёС‚С‹РІР°РµС‚ С‚РµРєСѓС‰РёР№ С‚Р°СЃРє
     QByteArray message = receive_queue.dequeue();
     QByteArray message_code;
     QTextStream stream(message);
 
     stream >> message_code;
 
-    // По первой строке проверяем какой пакет от клиента пришел.
+    // РџРѕ РїРµСЂРІРѕР№ СЃС‚СЂРѕРєРµ РїСЂРѕРІРµСЂСЏРµРј РєР°РєРѕР№ РїР°РєРµС‚ РѕС‚ РєР»РёРµРЅС‚Р° РїСЂРёС€РµР».
 
     if (message[0] == SYSTEM_MESSAGE_START)
     {
-        // Проверка введеных данных пользователем при авторизации
+        // РџСЂРѕРІРµСЂРєР° РІРІРµРґРµРЅС‹С… РґР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј РїСЂРё Р°РІС‚РѕСЂРёР·Р°С†РёРё
         if (message_code == VALIDATION)
         {
             QByteArray signal, user_id, username, password;
@@ -79,8 +79,8 @@ void Task_manager::handle_task()
                     send_message(VALIDATION, user_id, signal);
                 }
             }
-            // если пользователь уже авторизирован на другом устройстве
-            // запрещаем вход
+            // РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СѓР¶Рµ Р°РІС‚РѕСЂРёР·РёСЂРѕРІР°РЅ РЅР° РґСЂСѓРіРѕРј СѓСЃС‚СЂРѕР№СЃС‚РІРµ
+            // Р·Р°РїСЂРµС‰Р°РµРј РІС…РѕРґ
             else
             {
                 signal += DUPLICATE;
@@ -89,7 +89,7 @@ void Task_manager::handle_task()
             }
         }
 
-        // регистрация пользователя
+        // СЂРµРіРёСЃС‚СЂР°С†РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         else if (message_code == SIGNUP)
         {
             QByteArray signal, user_id, username, password;
@@ -98,7 +98,7 @@ void Task_manager::handle_task()
             signal += ' ';
             stream >> user_id >> username >> password;
 
-            // Если регистрация возможна, отправляем клиенту данные о его ID
+            // Р•СЃР»Рё СЂРµРіРёСЃС‚СЂР°С†РёСЏ РІРѕР·РјРѕР¶РЅР°, РѕС‚РїСЂР°РІР»СЏРµРј РєР»РёРµРЅС‚Сѓ РґР°РЅРЅС‹Рµ Рѕ РµРіРѕ ID
             if (validate_signup(username, password))
             {
                 signal += GOOD;
@@ -106,7 +106,7 @@ void Task_manager::handle_task()
                 send_message(VALIDATION, user_id, signal);
             }
 
-            // Пользователь уже зарегистрирован
+            // РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СѓР¶Рµ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ
             else
             {
                 signal += BAD;
@@ -114,7 +114,7 @@ void Task_manager::handle_task()
             }
         }
 
-        // Подключение клиента
+        // РџРѕРґРєР»СЋС‡РµРЅРёРµ РєР»РёРµРЅС‚Р°
         else if (message_code == CONNECTED)
         {
             QByteArray signal, username;
@@ -127,7 +127,7 @@ void Task_manager::handle_task()
             send_message(ALL, "default", signal);
         }
 
-        // Получение лога сообщений 
+        // РџРѕР»СѓС‡РµРЅРёРµ Р»РѕРіР° СЃРѕРѕР±С‰РµРЅРёР№ 
         else if (message_code == LOG)
         {
             QByteArray signal, username, destination;
@@ -150,7 +150,7 @@ void Task_manager::handle_task()
             }
         }
 
-        // Обновление лога сообщений
+        // РћР±РЅРѕРІР»РµРЅРёРµ Р»РѕРіР° СЃРѕРѕР±С‰РµРЅРёР№
         else if (message_code == UPDATE_LOG)
         {
             QByteArray signal, count, username, destination;
@@ -159,7 +159,7 @@ void Task_manager::handle_task()
             unsigned int old_count = count.toInt();
             unsigned int new_count = log_line_count(username, destination);
 
-            // Получено новое сообщение
+            // РџРѕР»СѓС‡РµРЅРѕ РЅРѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
             if (old_count == new_count)
             {
                 signal = LOG_FINISH;
@@ -167,7 +167,7 @@ void Task_manager::handle_task()
                 send_message(USER, username, signal);
             }
 
-            // Получить сообщения при входе в диалог
+            // РџРѕР»СѓС‡РёС‚СЊ СЃРѕРѕР±С‰РµРЅРёСЏ РїСЂРё РІС…РѕРґРµ РІ РґРёР°Р»РѕРі
             else
             {
                 QByteArray log = get_log_part(username, destination, old_count, new_count);
@@ -178,7 +178,7 @@ void Task_manager::handle_task()
             }
         }
 
-        // Добавление нового контакта
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ РєРѕРЅС‚Р°РєС‚Р°
         else if (message_code == ADD_CONTACT)
         {
             QByteArray signal, username, contact;
@@ -193,7 +193,7 @@ void Task_manager::handle_task()
             send_message(USER, username, signal);
         }
 
-        // Проверка онлайн ли пользователь
+        // РџСЂРѕРІРµСЂРєР° РѕРЅР»Р°Р№РЅ Р»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ
         else if (message_code == IS_ONLINE)
         {
             QByteArray signal, username, contact;
@@ -203,7 +203,7 @@ void Task_manager::handle_task()
 
             stream >> contact >> username;
 
-            // Если юзер онлайн то отправляяем это юзеру который находиться в диалоге с этим человеком
+            // Р•СЃР»Рё СЋР·РµСЂ РѕРЅР»Р°Р№РЅ С‚Рѕ РѕС‚РїСЂР°РІР»СЏСЏРµРј СЌС‚Рѕ СЋР·РµСЂСѓ РєРѕС‚РѕСЂС‹Р№ РЅР°С…РѕРґРёС‚СЊСЃСЏ РІ РґРёР°Р»РѕРіРµ СЃ СЌС‚РёРј С‡РµР»РѕРІРµРєРѕРј
             if (find_user(contact))
             {
                 signal += contact + ' ';
@@ -219,8 +219,8 @@ void Task_manager::handle_task()
             }
 
         }
-        // Обработка пакета выход от клиента
-        // Удаляем из бд сессию пользователя
+        // РћР±СЂР°Р±РѕС‚РєР° РїР°РєРµС‚Р° РІС‹С…РѕРґ РѕС‚ РєР»РёРµРЅС‚Р°
+        // РЈРґР°Р»СЏРµРј РёР· Р±Рґ СЃРµСЃСЃРёСЋ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         else if (message_code == EXIT)
         {
             QByteArray signal, user_id, username;
@@ -239,7 +239,7 @@ void Task_manager::handle_task()
         }
     }
     
-    // Отправка сообщений 
+    // РћС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёР№ 
     else if (message_code == SEND)
     {
         QByteArray username, destination;
@@ -250,13 +250,13 @@ void Task_manager::handle_task()
         s.remove(0, 1);
         QByteArray fixed_message = s.toUtf8();
 
-        // Обновление лога сообщений
+        // РћР±РЅРѕРІР»РµРЅРёРµ Р»РѕРіР° СЃРѕРѕР±С‰РµРЅРёР№
         update_log(username, destination, fixed_message);
         send_message(USER, destination, message);
     }
 }
 
-// Проверка на авторизацию пользователя
+// РџСЂРѕРІРµСЂРєР° РЅР° Р°РІС‚РѕСЂРёР·Р°С†РёСЋ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 bool Task_manager::validate_user(QByteArray username, QByteArray password)
 {
     QSqlQuery query;
@@ -269,7 +269,7 @@ bool Task_manager::validate_user(QByteArray username, QByteArray password)
     return false;
 }
 
-// Регистрация пользователя
+// Р РµРіРёСЃС‚СЂР°С†РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 bool Task_manager::validate_signup(QByteArray username, QByteArray password)
 {
     QSqlQuery query;
@@ -280,7 +280,7 @@ bool Task_manager::validate_signup(QByteArray username, QByteArray password)
     return false;
 }
 
-// Получения лога сообщений между пользователями 
+// РџРѕР»СѓС‡РµРЅРёСЏ Р»РѕРіР° СЃРѕРѕР±С‰РµРЅРёР№ РјРµР¶РґСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРјРё 
 QByteArray Task_manager::get_log(QByteArray username, QByteArray destination)
 {
     QSqlQuery query;
@@ -301,13 +301,13 @@ QByteArray Task_manager::get_log(QByteArray username, QByteArray destination)
     return log;
 }
 
-// Обновление лога в бд
+// РћР±РЅРѕРІР»РµРЅРёРµ Р»РѕРіР° РІ Р±Рґ
 bool Task_manager::update_log(QByteArray username, QByteArray destination, QByteArray message)
 {
     QSqlQuery query;
     int timestamp = QDateTime::currentDateTime().toTimeSpec(Qt::OffsetFromUTC).toString(Qt::ISODate).toInt();
 
-    // Добавление данных в бд
+    // Р”РѕР±Р°РІР»РµРЅРёРµ РґР°РЅРЅС‹С… РІ Р±Рґ
     if (query.exec("insert into messages (first_participant, second_participant, message, timestamp) values ('" + username + "', '" + destination + "', '" + message + "', " + QByteArray::number(timestamp) + ");"))
         return true;
 
@@ -315,7 +315,7 @@ bool Task_manager::update_log(QByteArray username, QByteArray destination, QByte
 }
 
 
-// Получение части лога сообщений
+// РџРѕР»СѓС‡РµРЅРёРµ С‡Р°СЃС‚Рё Р»РѕРіР° СЃРѕРѕР±С‰РµРЅРёР№
 QByteArray Task_manager::get_log_part(QByteArray username, QByteArray destination, unsigned int old_count, unsigned int new_count)
 {
     if (old_count >= new_count)
@@ -323,7 +323,7 @@ QByteArray Task_manager::get_log_part(QByteArray username, QByteArray destinatio
 
     QSqlQuery query;
 
-    // Запрос в бд
+    // Р—Р°РїСЂРѕСЃ РІ Р±Рґ
     query.exec("select * from messages where (first_participant = '" + username + "' and second_participant = '" + destination + "')"
         "or (first_participant = '" + destination + "' and second_participant = '" + username + "') order by timestamp desc;");
 
@@ -345,7 +345,7 @@ QByteArray Task_manager::get_log_part(QByteArray username, QByteArray destinatio
     return log;
 }
 
-// Получить кол-во строк сообщений в беседе между пользователями
+// РџРѕР»СѓС‡РёС‚СЊ РєРѕР»-РІРѕ СЃС‚СЂРѕРє СЃРѕРѕР±С‰РµРЅРёР№ РІ Р±РµСЃРµРґРµ РјРµР¶РґСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРјРё
 unsigned int Task_manager::log_line_count(QByteArray username, QByteArray destination)
 {
     QSqlQuery query;
@@ -358,7 +358,7 @@ unsigned int Task_manager::log_line_count(QByteArray username, QByteArray destin
     return query.value(0).toInt();
 }
 
-// Поиск контактов по юзернейму в базе данных
+// РџРѕРёСЃРє РєРѕРЅС‚Р°РєС‚РѕРІ РїРѕ СЋР·РµСЂРЅРµР№РјСѓ РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…
 
 QByteArray Task_manager::find_contact(QByteArray username, int count)
 {
@@ -382,7 +382,7 @@ QByteArray Task_manager::find_contact(QByteArray username, int count)
     return log;
 }
 
-// Поиск пользователей в сети по нику
+// РџРѕРёСЃРє РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РІ СЃРµС‚Рё РїРѕ РЅРёРєСѓ
 bool Task_manager::find_user(QByteArray username)
 {
     QSqlQuery query;
@@ -395,7 +395,7 @@ bool Task_manager::find_user(QByteArray username)
     return false;
 }
 
-// Добавление пользователя в текущюю сессию онлайн
+// Р”РѕР±Р°РІР»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ С‚РµРєСѓС‰СЋСЋ СЃРµСЃСЃРёСЋ РѕРЅР»Р°Р№РЅ
 void Task_manager::add_user(QByteArray username)
 {
     QSqlQuery query;
@@ -403,7 +403,7 @@ void Task_manager::add_user(QByteArray username)
     query.exec("insert into session (username) values ('" + username + "');");
 }
 
-// Удаление пользователя из текущей сессии онлайна
+// РЈРґР°Р»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР· С‚РµРєСѓС‰РµР№ СЃРµСЃСЃРёРё РѕРЅР»Р°Р№РЅР°
 void Task_manager::delete_user(QByteArray username)
 {
     QSqlQuery query;
