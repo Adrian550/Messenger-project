@@ -7,24 +7,12 @@
 vcpkg install qt:x64-windows-static
 vcpkg integrate install
 ```
-* Скачать fmt
-```
-vcpkg install fmt
-```
 * Скачать Boost
 ```
 vcpkg install boost:x64-windows-static
 ```
 
 ## Компиляция мессенджера
-
-### Cmake
-```
-git clone https://github.com/Adrian550/Messenger-project.git
-cd Messenger-project
-cmake . -B build
-cmake --build build
-```
 
 ### Visual Studio
 
@@ -34,7 +22,7 @@ cd Messenger-project
 cd Client
 
 Visual studio: Download plugin Qt VS Tools
-open Client.pro in Visual Studio
+open Client.pro in Visual Studio(Qt VS Tools)
 ```
 
 ### Qt Creator
