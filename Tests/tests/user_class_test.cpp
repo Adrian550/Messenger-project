@@ -2,11 +2,11 @@
 #include <boost/test/included/unit_test.hpp>
 #include "user.h"
 
-// Тест функционала класса User
+// РўРµСЃС‚ С„СѓРЅРєС†РёРѕРЅР°Р»Р° РєР»Р°СЃСЃР° User
 
 
-// Добавление контакта в список контактов
-// Проверка корректного добавления
+// Р”РѕР±Р°РІР»РµРЅРёРµ РєРѕРЅС‚Р°РєС‚Р° РІ СЃРїРёСЃРѕРє РєРѕРЅС‚Р°РєС‚РѕРІ
+// РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РґРѕР±Р°РІР»РµРЅРёСЏ
 BOOST_AUTO_TEST_CASE(TEST_ADD_CONTACT)
 {
 	User user;
@@ -17,8 +17,8 @@ BOOST_AUTO_TEST_CASE(TEST_ADD_CONTACT)
 	BOOST_CHECK_EQUAL(user.current_contacts.size(), size_constact_list);
 }
 
-// Полная очистка списка контактов
-// Проверка корректности очищения. 
+// РџРѕР»РЅР°СЏ РѕС‡РёСЃС‚РєР° СЃРїРёСЃРєР° РєРѕРЅС‚Р°РєС‚РѕРІ
+// РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё РѕС‡РёС‰РµРЅРёСЏ. 
 BOOST_AUTO_TEST_CASE(TEST_CLEAR_CONTACT)
 {
 	User user;
@@ -31,8 +31,8 @@ BOOST_AUTO_TEST_CASE(TEST_CLEAR_CONTACT)
 }
 
 
-// Поиск контакта в списке контактов
-// Проверка корректности поиска.
+// РџРѕРёСЃРє РєРѕРЅС‚Р°РєС‚Р° РІ СЃРїРёСЃРєРµ РєРѕРЅС‚Р°РєС‚РѕРІ
+// РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё РїРѕРёСЃРєР°.
 BOOST_AUTO_TEST_CASE(TEST_FIND_CONTACT)
 {
 	User user;
@@ -43,8 +43,8 @@ BOOST_AUTO_TEST_CASE(TEST_FIND_CONTACT)
 	BOOST_TEST(res_find);
 }
 
-// Удаление контакта по логину пользователя.
-// Проверка корректности удаления контакта.
+// РЈРґР°Р»РµРЅРёРµ РєРѕРЅС‚Р°РєС‚Р° РїРѕ Р»РѕРіРёРЅСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
+// РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё СѓРґР°Р»РµРЅРёСЏ РєРѕРЅС‚Р°РєС‚Р°.
 BOOST_AUTO_TEST_CASE(TEST_REMOVE_CONTACT)
 {
 	User user;
@@ -59,8 +59,8 @@ BOOST_AUTO_TEST_CASE(TEST_REMOVE_CONTACT)
 	BOOST_CHECK_EQUAL(user.current_contacts.size(), size_constact_list);
 }
 
-// Установление пароля.
-// Проверка корректности установления пароля.
+// РЈСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РїР°СЂРѕР»СЏ.
+// РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ РїР°СЂРѕР»СЏ.
 BOOST_AUTO_TEST_CASE(TEST_SET_PASSWORD)
 {
 	User user;
@@ -71,8 +71,8 @@ BOOST_AUTO_TEST_CASE(TEST_SET_PASSWORD)
 	BOOST_CHECK_EQUAL(user.get_password(), test_password);
 }
 
-// Установка логина для пользователя.
-// Проверка валидности установленного пароля.
+// РЈСЃС‚Р°РЅРѕРІРєР° Р»РѕРіРёРЅР° РґР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
+// РџСЂРѕРІРµСЂРєР° РІР°Р»РёРґРЅРѕСЃС‚Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРіРѕ РїР°СЂРѕР»СЏ.
 BOOST_AUTO_TEST_CASE(TEST_SET_USERNAME)
 {
 	User user;
@@ -83,8 +83,8 @@ BOOST_AUTO_TEST_CASE(TEST_SET_USERNAME)
 	BOOST_CHECK_EQUAL(user.get_username(), test_login);
 }
 
-// Поиск контактов.
-// Поиск пользователей в пустом списке контактов.
+// РџРѕРёСЃРє РєРѕРЅС‚Р°РєС‚РѕРІ.
+// РџРѕРёСЃРє РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РІ РїСѓСЃС‚РѕРј СЃРїРёСЃРєРµ РєРѕРЅС‚Р°РєС‚РѕРІ.
 BOOST_AUTO_TEST_CASE(TEST_FIND_EMPTY_CONTACT)
 {
 	User user;
@@ -95,8 +95,8 @@ BOOST_AUTO_TEST_CASE(TEST_FIND_EMPTY_CONTACT)
 	BOOST_TEST(test_result_empty_find == res_find);
 }
 
-// Установка пользователю индификатора
-// Проверка корректности установки уникального индификатора для текущей сессии пользователя.
+// РЈСЃС‚Р°РЅРѕРІРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ РёРЅРґРёС„РёРєР°С‚РѕСЂР°
+// РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё СѓСЃС‚Р°РЅРѕРІРєРё СѓРЅРёРєР°Р»СЊРЅРѕРіРѕ РёРЅРґРёС„РёРєР°С‚РѕСЂР° РґР»СЏ С‚РµРєСѓС‰РµР№ СЃРµСЃСЃРёРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
 BOOST_AUTO_TEST_CASE(TEST_SET_USER_ID)
 {
 	User user;
@@ -107,8 +107,8 @@ BOOST_AUTO_TEST_CASE(TEST_SET_USER_ID)
 	BOOST_CHECK_EQUAL(user.get_user_id(), test_id);
 }
 
-// Удаление контакта.
-// Проверка валидного удаления юзера из пустого списка контактов
+// РЈРґР°Р»РµРЅРёРµ РєРѕРЅС‚Р°РєС‚Р°.
+// РџСЂРѕРІРµСЂРєР° РІР°Р»РёРґРЅРѕРіРѕ СѓРґР°Р»РµРЅРёСЏ СЋР·РµСЂР° РёР· РїСѓСЃС‚РѕРіРѕ СЃРїРёСЃРєР° РєРѕРЅС‚Р°РєС‚РѕРІ
 BOOST_AUTO_TEST_CASE(TEST_REMOVE_NOT_EXIST_CONTACT)
 {
 	User user;
@@ -125,8 +125,8 @@ BOOST_AUTO_TEST_CASE(TEST_REMOVE_NOT_EXIST_CONTACT)
 }
 
 
-// Поиск по контактам.
-// Проверка поиска по заполненному списку контактов несуществующего пользователя.
+// РџРѕРёСЃРє РїРѕ РєРѕРЅС‚Р°РєС‚Р°Рј.
+// РџСЂРѕРІРµСЂРєР° РїРѕРёСЃРєР° РїРѕ Р·Р°РїРѕР»РЅРµРЅРЅРѕРјСѓ СЃРїРёСЃРєСѓ РєРѕРЅС‚Р°РєС‚РѕРІ РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
 BOOST_AUTO_TEST_CASE(TEST_FIND_NOT_EXIST_USER)
 {
 	User user;
@@ -139,11 +139,11 @@ BOOST_AUTO_TEST_CASE(TEST_FIND_NOT_EXIST_USER)
 	user.add_contact("Kirill");
 	user.add_contact("Vasya");
 	user.add_contact("Lesha");
-	user.add_contact("Артем");
-	user.add_contact("Илья");
-	user.add_contact("Леша");
+	user.add_contact("РђСЂС‚РµРј");
+	user.add_contact("РР»СЊСЏ");
+	user.add_contact("Р›РµС€Р°");
 
-	bool res_find = user.find_contact("Константин");
+	bool res_find = user.find_contact("РљРѕРЅСЃС‚Р°РЅС‚РёРЅ");
 
 	BOOST_TEST(search_res == res_find);
 }
