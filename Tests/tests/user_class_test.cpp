@@ -2,6 +2,11 @@
 #include <boost/test/included/unit_test.hpp>
 #include "user.h"
 
+// Тест функционала класса User
+
+
+// Добавление контакта в список контактов
+// Проверка корректного добавления
 BOOST_AUTO_TEST_CASE(TEST_ADD_CONTACT)
 {
 	User user;
@@ -12,6 +17,8 @@ BOOST_AUTO_TEST_CASE(TEST_ADD_CONTACT)
 	BOOST_CHECK_EQUAL(user.current_contacts.size(), size_constact_list);
 }
 
+// Полная очистка списка контактов
+// Проверка корректности очищения. 
 BOOST_AUTO_TEST_CASE(TEST_CLEAR_CONTACT)
 {
 	User user;
@@ -23,6 +30,9 @@ BOOST_AUTO_TEST_CASE(TEST_CLEAR_CONTACT)
 	BOOST_CHECK_EQUAL(user.current_contacts.size(), size_constact_list);
 }
 
+
+// Поиск контакта в списке контактов
+// Проверка корректности поиска.
 BOOST_AUTO_TEST_CASE(TEST_FIND_CONTACT)
 {
 	User user;
@@ -33,6 +43,8 @@ BOOST_AUTO_TEST_CASE(TEST_FIND_CONTACT)
 	BOOST_TEST(res_find);
 }
 
+// Удаление контакта по логину пользователя.
+// Проверка корректности удаления контакта.
 BOOST_AUTO_TEST_CASE(TEST_REMOVE_CONTACT)
 {
 	User user;
@@ -47,6 +59,8 @@ BOOST_AUTO_TEST_CASE(TEST_REMOVE_CONTACT)
 	BOOST_CHECK_EQUAL(user.current_contacts.size(), size_constact_list);
 }
 
+// Установление пароля.
+// Проверка корректности установления пароля.
 BOOST_AUTO_TEST_CASE(TEST_SET_PASSWORD)
 {
 	User user;
@@ -57,6 +71,8 @@ BOOST_AUTO_TEST_CASE(TEST_SET_PASSWORD)
 	BOOST_CHECK_EQUAL(user.get_password(), test_password);
 }
 
+// Установка логина для пользователя.
+// Проверка валидности установленного пароля.
 BOOST_AUTO_TEST_CASE(TEST_SET_USERNAME)
 {
 	User user;
@@ -67,6 +83,8 @@ BOOST_AUTO_TEST_CASE(TEST_SET_USERNAME)
 	BOOST_CHECK_EQUAL(user.get_username(), test_login);
 }
 
+// Поиск контактов.
+// Поиск пользователей в пустом списке контактов.
 BOOST_AUTO_TEST_CASE(TEST_FIND_EMPTY_CONTACT)
 {
 	User user;
@@ -77,6 +95,8 @@ BOOST_AUTO_TEST_CASE(TEST_FIND_EMPTY_CONTACT)
 	BOOST_TEST(test_result_empty_find == res_find);
 }
 
+// Установка пользователю индификатора
+// Проверка корректности установки уникального индификатора для текущей сессии пользователя.
 BOOST_AUTO_TEST_CASE(TEST_SET_USER_ID)
 {
 	User user;
@@ -87,6 +107,8 @@ BOOST_AUTO_TEST_CASE(TEST_SET_USER_ID)
 	BOOST_CHECK_EQUAL(user.get_user_id(), test_id);
 }
 
+// Удаление контакта.
+// Проверка валидного удаления юзера из пустого списка контактов
 BOOST_AUTO_TEST_CASE(TEST_REMOVE_NOT_EXIST_CONTACT)
 {
 	User user;
@@ -102,6 +124,9 @@ BOOST_AUTO_TEST_CASE(TEST_REMOVE_NOT_EXIST_CONTACT)
 	BOOST_CHECK_EQUAL(user.current_contacts.size(), size_constact_list);
 }
 
+
+// Поиск по контактам.
+// Проверка поиска по заполненному списку контактов несуществующего пользователя.
 BOOST_AUTO_TEST_CASE(TEST_FIND_NOT_EXIST_USER)
 {
 	User user;

@@ -3,8 +3,7 @@
 #include <Windows.h>
 #include <qmessagebox.h>
 
-// path to common includes
-// #include "/Messenger/common_includes/commands.h"
+
 #include "connection.h"
 
 Connection::Connection(QObject *parent) : QTcpSocket(parent)

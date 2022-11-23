@@ -9,14 +9,14 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    server.cpp \
-    task_manager.cpp \
-    client.cpp
+SOURCES += core/main.cpp \
+    core/server.cpp \
+    core/task_manager.cpp \
+    client/client.cpp
 
 HEADERS += \
-    server.h \
-    task_manager.h \
-    client.h \
-    commands.h \
-    std.h
+    core/server.h \
+    core/task_manager.h \
+    client/client.h \
+    util/commands.h \
+    util/std.h

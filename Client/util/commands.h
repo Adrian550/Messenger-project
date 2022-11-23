@@ -1,15 +1,12 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-// socket password
 #define PASSWORD "123456789"
 
-// system commands
 #define GOOD "true"
 #define BAD "false"
 #define SYSTEM_MESSAGE_START '$'
 
-// must begin with SYSTEM_MESSAGE_START
 #define VALIDATION "$connect"
 #define SIGNUP "$signup"
 #define DUPLICATE "$duplicate"
@@ -27,9 +24,7 @@
 #define EXIT "$exit"
 
 
-// send message or photo
 #define SEND "send"
 #define PHOTO "photo"
-// end
 
 #endif
