@@ -96,7 +96,7 @@ QString add_button_style = "QPushButton"
                            "    background: #8f8fb3;"
                            "}";
 
-
+//Client's consructor
 Window::Window(QWidget *parent) : QMainWindow(parent)
 {
     ui.setupUi(this);
@@ -220,7 +220,7 @@ void Window::on_socket_connected()
 
     emit(unlock());
 }
-
+// connection error
 void Window::on_socket_error()
 {
     emit(lock());
@@ -263,7 +263,7 @@ void Window::on_login_button_clicked()
 
     emit(unlock());
 }
-
+//handle sign up button
 void Window::on_signup_button_clicked()
 {
     emit(lock());

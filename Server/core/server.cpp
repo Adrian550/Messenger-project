@@ -5,6 +5,9 @@
 
 #include "util/commands.h"
 
+// Конструктор сервера, наследуемся от QTcpServer
+// Начинаем слушать server_port
+// Устанавливаем соединение с базой данных
 Server::Server(QObject *parent) : QTcpServer(parent)
 {
     if (!this->listen(QHostAddress::Any, server_port))
@@ -27,12 +30,15 @@ Server::Server(QObject *parent) : QTcpServer(parent)
         OUTPUT("Error: database connection failed:" << db.lastError());
         exit(1);
     }
-
+    // В случае если остались активные сессии с прошлой работы сервера
+    // удаляем их
     QSqlQuery query;
     query.exec("delete from session;");
 }
 
-// connection
+// connection нового клиента
+// С помощью класса Client создаем нового пользователя с уникальным ID
+// Биндим сигналы и слоты для отправки пакетов, принятия пакетов, мьютексы для подключения, 
 void Server::incomingConnection(qintptr socket_id)
 {
     Client *thread = new Client(socket_id, this);
@@ -52,7 +58,8 @@ void Server::incomingConnection(qintptr socket_id)
     OUTPUT("Client connected id:" << thread->get_id());
 }
 
-// send
+// Слот для отправки сообщения клиенту, в случае если переданный mode является EXIT
+// то всем подключенным клиентам отправляется сообщение о его выходе, для корректной работы плашки Online/Offline
 void Server::on_send_message(QByteArray mode, QByteArray value, QByteArray message)
 {
     if (mode == EXIT)

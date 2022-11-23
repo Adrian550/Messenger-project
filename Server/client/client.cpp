@@ -3,11 +3,14 @@
 #include "util/commands.h"
 #include "util/std.h"
 
+// Конструктор сессии клиента/ заполняет id ползователя
 Client::Client(int id, QObject *parent) : QThread(parent)
 {
     user_id = QByteArray::number(id);
 }
 
+// Запуск прослушивания клиента + установленния соединения между слотами и сигналами..
+// приема пакетов и дисконекта пользователя.
 void Client::run()
 {
     socket = new QTcpSocket();
@@ -28,6 +31,7 @@ void Client::run()
     exec();
 }
 
+// Слот для слушания сокета и чтения байт с него
 void Client::receive()
 {
     const QByteArray message = socket->readAll();
@@ -48,11 +52,12 @@ void Client::receive()
     }
 }
 
+// Отправка сообщения на клиент 
 void Client::send_message(QByteArray mode, QByteArray value, QByteArray message)
 {
     if (!finished)
     {
-        lock();
+        lock(); // mutex
 
         DEBUG("sending: " + message);
 
@@ -99,6 +104,8 @@ void Client::send_message(QByteArray mode, QByteArray value, QByteArray message)
     unlock();
 }
 
+
+// Слот для корректного разрыва соединения
 void Client::on_disconnected()
 {
     lock();
@@ -115,17 +122,18 @@ void Client::on_disconnected()
     exit(0);
 }
 
-
+// Метод для установки имени клиенту.
 void Client::set_username(const QByteArray username)
 {
     this->username = username;
 }
 
+// Геттер на получения айди пользователя 
 QByteArray Client::get_id()
 {
     return user_id;
 }
-
+// Геттер на получения логина пользователя.
 QByteArray Client::get_username()
 {
     return username;

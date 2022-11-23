@@ -6,6 +6,7 @@
 
 #include "connection.h"
 
+//Connection by QT socket
 Connection::Connection(QObject *parent) : QTcpSocket(parent)
 {
     connect(socket, SIGNAL(readyRead()), this, SLOT(receive_message()));
@@ -26,19 +27,21 @@ Connection::Connection(QObject *parent) : QTcpSocket(parent)
     socket->connectToHost(server_ip, server_port);
 }
 
+//Destructor for Connection class
+//Delete User's object, disconnect from server
 Connection::~Connection()
 {
     socket->deleteLater();
     delete user;
 }
 
-// connection
+// connection succesfull
 void Connection::on_socket_connected()
 {
     status = true;
     emit(connected());
 }
-
+//connection error
 void Connection::on_socket_error(QAbstractSocket::SocketError socketError)
 {
     if (status)
@@ -46,21 +49,21 @@ void Connection::on_socket_error(QAbstractSocket::SocketError socketError)
 
     emit(error());
 }
-
+//Connect + Reconnect
 void Connection::on_socket_change(QAbstractSocket::SocketState socketState)
 {
     if (socketState == QAbstractSocket::UnconnectedState)
         socket->connectToHost(server_ip, server_port);
 }
 
-// receive, send
+// recieve
 void Connection::receive_message()
 {
     QByteArray message = socket->readAll();
 
     emit(add_task(message));
 }
-
+//check if message has been sent
 bool Connection::send_message(QByteArray message)
 {
     if (socket->write(message))

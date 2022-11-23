@@ -6,7 +6,7 @@
 #include "ui/window.h"
 #include "user.h"
 #include "connection/connection.h"
-
+//Create application window
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

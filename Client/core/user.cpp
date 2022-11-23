@@ -4,12 +4,12 @@ User::User()
 {
 }
 
-// contacts
+// add contact into list of User's contacts
 void User::add_contact(QByteArray contact)
 {
     current_contacts.push_back(contact);
 }
-
+//remove contact from list
 void User::remove_contact(QByteArray contact)
 {
     for (int i = 0; i < current_contacts.size(); i++)
@@ -18,7 +18,7 @@ void User::remove_contact(QByteArray contact)
             current_contacts.remove(i);
     }
 }
-
+// find contact in list
 bool User::find_contact(QByteArray contact)
 {
     for (int i = 0; i < current_contacts.size(); i++)
@@ -29,7 +29,7 @@ bool User::find_contact(QByteArray contact)
 
     return 0;
 }
-
+//clear contact list
 void User::clear_contacts()
 {
     current_contacts.clear();

@@ -7,6 +7,7 @@
 
 class Contact
 {
+//create and delete object of Contact
 public:
     Contact(QWidget *, QVBoxLayout *, QLabel *, QLabel *);
     ~Contact();

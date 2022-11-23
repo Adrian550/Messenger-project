@@ -16,7 +16,9 @@ public:
     explicit Server(QObject *parent = 0);
 
 private:
+    // Порт который слушаем на сервере
     int server_port = 8084;
+    // Название базы данных
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
 signals:

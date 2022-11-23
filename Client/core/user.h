@@ -3,16 +3,16 @@
 
 #include <QByteArray>
 #include <QVector>
-
+//Constructor of User
 class User
 {
 public:
     User();
-
+// Class fields
 private:
     QByteArray username, user_id, password;
     QVector<QByteArray> current_contacts;
-
+//Methods
 public:
     void add_contact(QByteArray);
     void remove_contact(QByteArray);

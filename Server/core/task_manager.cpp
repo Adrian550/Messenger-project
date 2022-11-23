@@ -31,6 +31,7 @@ void Task_manager::disconnect()
     exit(0);
 }
 
+// Добавление таска(пакета от клиента) в очередь задач в обработчике
 void Task_manager::on_add_task(QByteArray task)
 {
     receive_queue.enqueue(task);
@@ -39,16 +40,21 @@ void Task_manager::on_add_task(QByteArray task)
         handle_task();
 }
 
+// Обработчик пакетов от клиентов.
 void Task_manager::handle_task()
 {
+    // Считывает текущий таск
     QByteArray message = receive_queue.dequeue();
     QByteArray message_code;
     QTextStream stream(message);
 
     stream >> message_code;
 
+    // По первой строке проверяем какой пакет от клиента пришел.
+
     if (message[0] == SYSTEM_MESSAGE_START)
     {
+        // Проверка введеных данных пользователем при авторизации
         if (message_code == VALIDATION)
         {
             QByteArray signal, user_id, username, password;
@@ -73,7 +79,8 @@ void Task_manager::handle_task()
                     send_message(VALIDATION, user_id, signal);
                 }
             }
-
+            // если пользователь уже авторизирован на другом устройстве
+            // запрещаем вход
             else
             {
                 signal += DUPLICATE;
@@ -82,6 +89,7 @@ void Task_manager::handle_task()
             }
         }
 
+        // регистрация пользователя
         else if (message_code == SIGNUP)
         {
             QByteArray signal, user_id, username, password;
@@ -90,6 +98,7 @@ void Task_manager::handle_task()
             signal += ' ';
             stream >> user_id >> username >> password;
 
+            // Если регистрация возможна, отправляем клиенту данные о его ID
             if (validate_signup(username, password))
             {
                 signal += GOOD;
@@ -97,6 +106,7 @@ void Task_manager::handle_task()
                 send_message(VALIDATION, user_id, signal);
             }
 
+            // Пользователь уже зарегистрирован
             else
             {
                 signal += BAD;
@@ -104,6 +114,7 @@ void Task_manager::handle_task()
             }
         }
 
+        // Подключение клиента
         else if (message_code == CONNECTED)
         {
             QByteArray signal, username;
@@ -116,6 +127,7 @@ void Task_manager::handle_task()
             send_message(ALL, "default", signal);
         }
 
+        // Получение лога сообщений 
         else if (message_code == LOG)
         {
             QByteArray signal, username, destination;
@@ -138,6 +150,7 @@ void Task_manager::handle_task()
             }
         }
 
+        // Обновление лога сообщений
         else if (message_code == UPDATE_LOG)
         {
             QByteArray signal, count, username, destination;
@@ -146,6 +159,7 @@ void Task_manager::handle_task()
             unsigned int old_count = count.toInt();
             unsigned int new_count = log_line_count(username, destination);
 
+            // Получено новое сообщение
             if (old_count == new_count)
             {
                 signal = LOG_FINISH;
@@ -153,6 +167,7 @@ void Task_manager::handle_task()
                 send_message(USER, username, signal);
             }
 
+            // Получить сообщения при входе в диалог
             else
             {
                 QByteArray log = get_log_part(username, destination, old_count, new_count);
@@ -163,6 +178,7 @@ void Task_manager::handle_task()
             }
         }
 
+        // Добавление нового контакта
         else if (message_code == ADD_CONTACT)
         {
             QByteArray signal, username, contact;
@@ -177,7 +193,7 @@ void Task_manager::handle_task()
             send_message(USER, username, signal);
         }
 
-
+        // Проверка онлайн ли пользователь
         else if (message_code == IS_ONLINE)
         {
             QByteArray signal, username, contact;
@@ -187,6 +203,7 @@ void Task_manager::handle_task()
 
             stream >> contact >> username;
 
+            // Если юзер онлайн то отправляяем это юзеру который находиться в диалоге с этим человеком
             if (find_user(contact))
             {
                 signal += contact + ' ';
@@ -202,7 +219,8 @@ void Task_manager::handle_task()
             }
 
         }
-
+        // Обработка пакета выход от клиента
+        // Удаляем из бд сессию пользователя
         else if (message_code == EXIT)
         {
             QByteArray signal, user_id, username;
@@ -220,7 +238,8 @@ void Task_manager::handle_task()
             }
         }
     }
-
+    
+    // Отправка сообщений 
     else if (message_code == SEND)
     {
         QByteArray username, destination;
@@ -231,11 +250,13 @@ void Task_manager::handle_task()
         s.remove(0, 1);
         QByteArray fixed_message = s.toUtf8();
 
+        // Обновление лога сообщений
         update_log(username, destination, fixed_message);
         send_message(USER, destination, message);
     }
 }
 
+// Проверка на авторизацию пользователя
 bool Task_manager::validate_user(QByteArray username, QByteArray password)
 {
     QSqlQuery query;
@@ -248,6 +269,7 @@ bool Task_manager::validate_user(QByteArray username, QByteArray password)
     return false;
 }
 
+// Регистрация пользователя
 bool Task_manager::validate_signup(QByteArray username, QByteArray password)
 {
     QSqlQuery query;
@@ -258,6 +280,7 @@ bool Task_manager::validate_signup(QByteArray username, QByteArray password)
     return false;
 }
 
+// Получения лога сообщений между пользователями 
 QByteArray Task_manager::get_log(QByteArray username, QByteArray destination)
 {
     QSqlQuery query;
@@ -278,17 +301,21 @@ QByteArray Task_manager::get_log(QByteArray username, QByteArray destination)
     return log;
 }
 
+// Обновление лога в бд
 bool Task_manager::update_log(QByteArray username, QByteArray destination, QByteArray message)
 {
     QSqlQuery query;
     int timestamp = QDateTime::currentDateTime().toTimeSpec(Qt::OffsetFromUTC).toString(Qt::ISODate).toInt();
 
+    // Добавление данных в бд
     if (query.exec("insert into messages (first_participant, second_participant, message, timestamp) values ('" + username + "', '" + destination + "', '" + message + "', " + QByteArray::number(timestamp) + ");"))
         return true;
 
     return false;
 }
 
+
+// Получение части лога сообщений
 QByteArray Task_manager::get_log_part(QByteArray username, QByteArray destination, unsigned int old_count, unsigned int new_count)
 {
     if (old_count >= new_count)
@@ -296,6 +323,7 @@ QByteArray Task_manager::get_log_part(QByteArray username, QByteArray destinatio
 
     QSqlQuery query;
 
+    // Запрос в бд
     query.exec("select * from messages where (first_participant = '" + username + "' and second_participant = '" + destination + "')"
         "or (first_participant = '" + destination + "' and second_participant = '" + username + "') order by timestamp desc;");
 
@@ -317,6 +345,7 @@ QByteArray Task_manager::get_log_part(QByteArray username, QByteArray destinatio
     return log;
 }
 
+// Получить кол-во строк сообщений в беседе между пользователями
 unsigned int Task_manager::log_line_count(QByteArray username, QByteArray destination)
 {
     QSqlQuery query;
@@ -329,6 +358,7 @@ unsigned int Task_manager::log_line_count(QByteArray username, QByteArray destin
     return query.value(0).toInt();
 }
 
+// Поиск контактов по юзернейму в базе данных
 
 QByteArray Task_manager::find_contact(QByteArray username, int count)
 {
@@ -352,7 +382,7 @@ QByteArray Task_manager::find_contact(QByteArray username, int count)
     return log;
 }
 
-
+// Поиск пользователей в сети по нику
 bool Task_manager::find_user(QByteArray username)
 {
     QSqlQuery query;
@@ -365,6 +395,7 @@ bool Task_manager::find_user(QByteArray username)
     return false;
 }
 
+// Добавление пользователя в текущюю сессию онлайн
 void Task_manager::add_user(QByteArray username)
 {
     QSqlQuery query;
@@ -372,6 +403,7 @@ void Task_manager::add_user(QByteArray username)
     query.exec("insert into session (username) values ('" + username + "');");
 }
 
+// Удаление пользователя из текущей сессии онлайна
 void Task_manager::delete_user(QByteArray username)
 {
     QSqlQuery query;
