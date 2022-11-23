@@ -1,6 +1,6 @@
 // path to common includes
 //#include "/Messenger/common_includes/std.h"
-#include "std.h"
+#include "util/std.h"
 #include <QKeyEvent>
 #include <QScrollBar>
 #include <QProcess>
@@ -9,10 +9,10 @@
 
 // path to common includes
 //#include "/Messenger/common_includes/commands.h"
-#include "commands.h"
-#include "window.h"
+#include "util/commands.h"
+#include "ui/window.h"
 
-#include "task_manager.h"
+#include "task-manager/task_manager.h"
 
 // error messages
 QString error[] = {

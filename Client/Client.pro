@@ -13,13 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += core/main.cpp\
-        ui/window.cpp \
     core/user.cpp \
     connection/connection.cpp \
     task-manager/task_manager.cpp \
     core/contact.cpp
 
-HEADERS  += ui/window.h \
+HEADERS  += \
     core/user.h \
     connection/connection.h \
     task-manager/task_manager.h \
@@ -27,7 +26,7 @@ HEADERS  += ui/window.h \
     util/commands.h \
     util/std.h
 
-FORMS    += ui/window.ui
+FORMS    +=
 
 RESOURCES += \
     res.qrc
