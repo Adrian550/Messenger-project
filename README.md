@@ -3,6 +3,11 @@
 
 ## Установка зависимостей
 * Скачать Qt
+
+```
+Download installer https://www.qt.io/download-qt-installer
+```
+or
 ```
 vcpkg install qt:x64-windows-static
 vcpkg integrate install
