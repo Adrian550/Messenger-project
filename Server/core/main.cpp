@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    Server server; // Инициализация сервера
+    Server server; // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃРµСЂРІРµСЂР°
 
     return a.exec();
 }
