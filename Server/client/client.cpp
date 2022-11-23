@@ -3,14 +3,14 @@
 #include "util/commands.h"
 #include "util/std.h"
 
-// Конструктор сессии клиента/ заполняет id ползователя
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃРµСЃСЃРёРё РєР»РёРµРЅС‚Р°/ Р·Р°РїРѕР»РЅСЏРµС‚ id РїРѕР»Р·РѕРІР°С‚РµР»СЏ
 Client::Client(int id, QObject *parent) : QThread(parent)
 {
     user_id = QByteArray::number(id);
 }
 
-// Запуск прослушивания клиента + установленния соединения между слотами и сигналами..
-// приема пакетов и дисконекта пользователя.
+// Р—Р°РїСѓСЃРє РїСЂРѕСЃР»СѓС€РёРІР°РЅРёСЏ РєР»РёРµРЅС‚Р° + СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРёСЏ СЃРѕРµРґРёРЅРµРЅРёСЏ РјРµР¶РґСѓ СЃР»РѕС‚Р°РјРё Рё СЃРёРіРЅР°Р»Р°РјРё..
+// РїСЂРёРµРјР° РїР°РєРµС‚РѕРІ Рё РґРёСЃРєРѕРЅРµРєС‚Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
 void Client::run()
 {
     socket = new QTcpSocket();
@@ -31,7 +31,7 @@ void Client::run()
     exec();
 }
 
-// Слот для слушания сокета и чтения байт с него
+// РЎР»РѕС‚ РґР»СЏ СЃР»СѓС€Р°РЅРёСЏ СЃРѕРєРµС‚Р° Рё С‡С‚РµРЅРёСЏ Р±Р°Р№С‚ СЃ РЅРµРіРѕ
 void Client::receive()
 {
     const QByteArray message = socket->readAll();
@@ -52,7 +52,7 @@ void Client::receive()
     }
 }
 
-// Отправка сообщения на клиент 
+// РћС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ РЅР° РєР»РёРµРЅС‚ 
 void Client::send_message(QByteArray mode, QByteArray value, QByteArray message)
 {
     if (!finished)
@@ -105,7 +105,7 @@ void Client::send_message(QByteArray mode, QByteArray value, QByteArray message)
 }
 
 
-// Слот для корректного разрыва соединения
+// РЎР»РѕС‚ РґР»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ СЂР°Р·СЂС‹РІР° СЃРѕРµРґРёРЅРµРЅРёСЏ
 void Client::on_disconnected()
 {
     lock();
@@ -122,18 +122,18 @@ void Client::on_disconnected()
     exit(0);
 }
 
-// Метод для установки имени клиенту.
+// РњРµС‚РѕРґ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё РёРјРµРЅРё РєР»РёРµРЅС‚Сѓ.
 void Client::set_username(const QByteArray username)
 {
     this->username = username;
 }
 
-// Геттер на получения айди пользователя 
+// Р“РµС‚С‚РµСЂ РЅР° РїРѕР»СѓС‡РµРЅРёСЏ Р°Р№РґРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ 
 QByteArray Client::get_id()
 {
     return user_id;
 }
-// Геттер на получения логина пользователя.
+// Р“РµС‚С‚РµСЂ РЅР° РїРѕР»СѓС‡РµРЅРёСЏ Р»РѕРіРёРЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
 QByteArray Client::get_username()
 {
     return username;
