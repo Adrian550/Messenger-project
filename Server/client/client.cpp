@@ -1,7 +1,7 @@
 #include "client.h"
 
-#include "commands.h"
-#include "std.h"
+#include "util/commands.h"
+#include "util/std.h"
 
 Client::Client(int id, QObject *parent) : QThread(parent)
 {

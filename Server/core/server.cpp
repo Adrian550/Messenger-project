@@ -1,9 +1,9 @@
 #include <QtCore/QCoreApplication>
 
 #include "task_manager.h"
-#include "server.h"
+#include "core/server.h"
 
-#include "commands.h"
+#include "util/commands.h"
 
 Server::Server(QObject *parent) : QTcpServer(parent)
 {

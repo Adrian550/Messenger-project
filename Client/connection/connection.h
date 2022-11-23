@@ -3,7 +3,7 @@
 
 #include <QTcpSocket>
 
-#include "user.h"
+#include "core/user.h"
 
 class Connection : public QTcpSocket
 {

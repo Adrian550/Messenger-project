@@ -6,10 +6,10 @@
 #include <QMovie>
 
 #include "ui_window.h"
-#include "connection.h"
-#include "task_manager.h"
-#include "user.h"
-#include "contact.h"
+#include "connection/connection.h"
+#include "task-manager/task_manager.h"
+#include "core/user.h"
+#include "core/contact.h"
 
 #define MAX_CONTACTS 3
 

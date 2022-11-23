@@ -6,7 +6,7 @@
 #include <QMap>
 #include <QtSql>
 
-#include "client.h"
+#include "client/client.h"
 
 class Server : public QTcpServer
 {

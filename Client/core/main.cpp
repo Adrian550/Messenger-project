@@ -3,9 +3,9 @@
 
 #include <QtWidgets/QApplication>
 
-#include "window.h"
+#include "ui/window.h"
 #include "user.h"
-#include "connection.h"
+#include "connection/connection.h"
 
 int main(int argc, char *argv[])
 {

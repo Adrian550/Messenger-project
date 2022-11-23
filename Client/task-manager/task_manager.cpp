@@ -7,7 +7,7 @@
 
 #include <qtextstream.h>
 
-#include "commands.h"
+#include "util/commands.h"
 // path to common includes
 //#include "/Messenger/common_includes/commands.h"
 
